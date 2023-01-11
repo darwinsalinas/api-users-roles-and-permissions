@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -28,3 +29,4 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::apiResource('users', UsersController::class)->middleware('auth:api');
 Route::apiResource('roles', RolesController::class)->middleware('auth:api');
+Route::apiResource('permissions', PermissionsController::class)->middleware('auth:api');
