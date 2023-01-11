@@ -42,6 +42,16 @@ class UsersController extends Controller
 
         $user = User::create($validatedData);
 
+        if (isset($validatedData['roles'])) {
+            $roles = Role::whereIn('name', $validatedData['roles'])->get();
+            $user->assignRole($roles);
+        }
+
+        if (isset($validatedData['permissions'])) {
+            $permissions = Permission::whereIn('name', $validatedData['permissions'])->get();
+            $user->givePermissionTo($permissions);
+        }
+
         return new UserResource($user);
     }
 
@@ -75,6 +85,16 @@ class UsersController extends Controller
 
         $user->update($validatedData);
 
+        if (isset($validatedData['roles'])) {
+            $roles = Role::whereIn('name', $validatedData['roles'])->get();
+            $user->syncRoles($roles);
+        }
+
+        if (isset($validatedData['permissions'])) {
+            $permissions = Permission::whereIn('name', $validatedData['permissions'])->get();
+            $user->syncPermissions($permissions);
+        }
+
         return new UserResource($user);
     }
 
@@ -86,6 +106,8 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->roles()->delete();
+        $user->permissions()->delete();
         $user->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

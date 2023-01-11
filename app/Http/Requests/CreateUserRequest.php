@@ -37,6 +37,10 @@ class CreateUserRequest extends FormRequest
             'address' => 'required|string|max:250',
             'country' => 'required|string|max:100',
             'phone_number' => 'required|string|max:20',
+            'roles' => 'array|min:1|nullable',
+            'roles.*' => 'required|string|max:255',
+            'permissions' => 'array|min:1|nullable',
+            'permissions.*' => 'required|string|max:255'
         ];
     }
 

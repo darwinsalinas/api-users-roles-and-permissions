@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UserPermissionsController;
+use App\Http\Controllers\UserRolesController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +30,13 @@ Route::controller(AuthController::class)->group(function () {
 
 
 Route::apiResource('users', UsersController::class)->middleware('auth:api');
+Route::apiResource('users.roles', UserRolesController::class)->middleware('auth:api')->only('store');
+Route::delete('users/{user}/roles', [UserRolesController::class, 'destroy'])->middleware('auth:api');
+Route::patch('users/{user}/roles', [UserRolesController::class, 'update'])->middleware('auth:api');
+
+Route::apiResource('users.permissions', UserPermissionsController::class)->middleware('auth:api')->only('store');
+Route::delete('users/{user}/permissions', [UserPermissionsController::class, 'destroy'])->middleware('auth:api');
+Route::patch('users/{user}/permissions', [UserPermissionsController::class, 'update'])->middleware('auth:api');
+
 Route::apiResource('roles', RolesController::class)->middleware('auth:api');
 Route::apiResource('permissions', PermissionsController::class)->middleware('auth:api');
