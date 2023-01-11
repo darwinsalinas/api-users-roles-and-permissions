@@ -9,6 +9,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 
 class UsersController extends Controller
@@ -20,7 +22,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return new UserCollection(User::paginate());
+        $users = User::query()
+            ->with('roles.permissions', 'permissions')
+            ->paginate();
+
+        return new UserCollection($users);
     }
 
 
@@ -47,6 +53,8 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        $user->load('roles.permissions', 'permissions');
+
         return new UserResource($user);
     }
 
