@@ -72,6 +72,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function getAgeAttribute()
     {
-        return Carbon::parse($this->date_of_birth)->age();
+        if ($this->date_of_birth) {
+            return Carbon::parse($this->date_of_birth)->age;
+        }
+
+        return 0;
     }
 }

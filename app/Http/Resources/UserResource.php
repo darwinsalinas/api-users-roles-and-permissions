@@ -14,7 +14,6 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -25,6 +24,7 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'country' => $this->country,
             'phone_number' => $this->phone_number,
+            'age' => $this->age,
             'token' => $this->when($this->token, $this->token),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'permissions' => PermissionResource::collection($this->whenLoaded('permissions'))
