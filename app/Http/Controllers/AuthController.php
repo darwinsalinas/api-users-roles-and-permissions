@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\UserAuthResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +40,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $user->token = $token;
 
-        return new UserResource($user);
+        return new UserAuthResource($user);
     }
 
     public function register(Request $request)
@@ -60,7 +60,7 @@ class AuthController extends Controller
         $token = Auth::login($user);
         $user->token = $token;
 
-        return new UserResource($user);
+        return new UserAuthResource($user);
     }
 
     public function logout()
@@ -74,7 +74,7 @@ class AuthController extends Controller
 
     public function me()
     {
-        return new UserResource(Auth::user());
+        return new UserAuthResource(Auth::user());
     }
 
     public function refresh()
@@ -84,7 +84,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $user->token = $token;
 
-        return new UserResource(Auth::user());
+        return new UserAuthResource(Auth::user());
     }
 
 }
