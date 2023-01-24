@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -28,7 +29,7 @@ class UpdateUserRequest extends FormRequest
         $today = date('Y-m-d');
 
         return [
-            'name' => 'string|max:255',
+            'name' => 'string|max:255|min:3',
             'email' => 'string|email|max:255|unique:users,email,' . $this->user->id,
             'password' => 'string|min:8',
             'date_of_birth' => 'date|before_or_equal:' . $today,
@@ -45,6 +46,6 @@ class UpdateUserRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'message' => 'Validation Error',
             'data' => $validator->errors()
-        ]));
+        ], Response::HTTP_BAD_REQUEST));
     }
 }

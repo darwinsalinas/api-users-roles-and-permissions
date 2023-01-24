@@ -33,7 +33,7 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \App\Http\Resources\UserResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateUserRequest $request)
     {
@@ -52,7 +52,10 @@ class UsersController extends Controller
             $user->givePermissionTo($permissions);
         }
 
-        return new UserResource($user);
+        return response()->json(
+            new UserResource($user),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
